@@ -18,10 +18,42 @@ const MainContainer = styled.div`
 	flex-direction: column;
 `;
 
-const NavContainer = styled.div`
+const Navbar = styled.div`
 	height: 80px;
-	width: 100vw;
-	background: #f9f9f9;
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	background-color: #fff;
+
+	.logo {
+		img {
+			height: 60px;
+			padding-left: 20px;
+			padding-right: 30px;
+		}
+
+		display: flex;
+		align-items: center;
+	}
+
+	.action {
+		margin-right: 100px;
+
+		input {
+			height: 40px;
+
+			border: none;
+		}
+
+		button {
+			border: none;
+			margin-left: 50px;
+		}
+	}
 `;
 
 const StoreContainer = styled.div`
@@ -64,19 +96,27 @@ const CustomerDash = () => {
 
 		content = (
 			<MainContainer>
-				<NavContainer>
-					<button
-						onClick={async () => {
-							await logout().unwrap();
-							dispatch(clearCredentials());
+				<Navbar>
+					<div className="logo">
+						<img src="logo.png" alt="" />
+						<h1>Luxe Haven</h1>
+					</div>
 
-							navigate("/");
-						}}
-					>
-						Logout
-					</button>
-					CustomerDash
-				</NavContainer>
+					<div className="action">
+						<input type="text" placeholder="Search" />
+						<button
+							onClick={async () => {
+								await logout().unwrap();
+								dispatch(clearCredentials());
+
+								navigate("/");
+							}}
+						>
+							Logout
+						</button>
+						<button>Cart</button>
+					</div>
+				</Navbar>
 				<StoreContainer>
 					<ProductCard data={newItems} />
 				</StoreContainer>
