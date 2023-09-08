@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const PublicContainer = styled.div`
 	min-height: 100vh;
@@ -99,6 +102,18 @@ const PopularContainer = styled.div`
 `;
 
 const PublicDash = () => {
+	const userData = useSelector((state) => state.auth);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (userData.userInfo) navigate("/customer");
+	}, [userData, navigate]);
+
+	const login = () => {
+		navigate("/login");
+	};
+
 	return (
 		<PublicContainer>
 			<Navbar>
@@ -109,7 +124,7 @@ const PublicDash = () => {
 
 				<div className="action">
 					<input type="text" placeholder="Search" />
-					<button>Login</button>
+					<button onClick={login}>Login</button>
 					<button>Cart</button>
 				</div>
 			</Navbar>
