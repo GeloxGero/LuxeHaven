@@ -6,6 +6,7 @@ import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
 
 import connectDB from "../backend/config/db.js";
+import seedDB from "./faker/Faker.js";
 
 import CartRoutes from "./routes/CartRoutes.js";
 import CategoryRoutes from "./routes/CategoryRoutes.js";
@@ -21,6 +22,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 connectDB();
+seedDB();
 
 const app = express();
 
