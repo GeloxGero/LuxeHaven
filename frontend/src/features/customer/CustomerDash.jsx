@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCredentials } from "../../slices/authSlice";
 import { useGetProductsQuery } from "../../slices/productSlice";
+
 import { useGetCategoriesQuery } from "../../slices/categorySlice";
 import ProductCard from "../../components/ProductCard";
 
@@ -57,7 +58,9 @@ const Navbar = styled.div`
 `;
 
 const StoreContainer = styled.div`
-	height: 1500px;
+	margin-top: 50px;
+	padding-bottom: 150px;
+	min-height: 1500px;
 	min-width: 70vw;
 	max-width: 85vw;
 

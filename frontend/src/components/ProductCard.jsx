@@ -71,6 +71,8 @@ const ProductCardContainer = styled.div`
 		right: 0;
 		height: 18px;
 
+		color: #f0f0f0;
+
 		padding: 10px 10px 0 0;
 	}
 

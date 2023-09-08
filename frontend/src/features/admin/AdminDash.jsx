@@ -9,6 +9,9 @@ const MainContainer = styled.div`
 	align-items: center;
 `;
 
+//dashboard
+//reusable component for table
+//reusable table
 const AdminDash = () => {
 	return <MainContainer>AdminDash</MainContainer>;
 };

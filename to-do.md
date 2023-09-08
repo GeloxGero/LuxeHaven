@@ -16,3 +16,6 @@ Customer side
 - [ ] Profile route
 - [ ] Profile route receipts
 - [ ] Profile route orders tracking
+
+- [] cart
+- [] admin
