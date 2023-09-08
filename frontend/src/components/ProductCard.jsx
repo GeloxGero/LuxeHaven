@@ -6,6 +6,7 @@ import {
 	faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import images from "../assets/image-links";
 
 const ProductContainer = styled.div`
 	max-width: 80vw;
@@ -134,7 +135,7 @@ const ProductCard = ({ data }) => {
 						<h1>{item.name}</h1>
 						<p>₱ {item.price}</p>
 						<FontAwesomeIcon icon={faHeart} className="icon" />
-						<img alt="image" />
+						<img src={images[Math.floor(Math.random() * 10)]} alt="image" />
 					</ProductCardContainer>
 				);
 			})}

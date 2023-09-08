@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCredentials } from "../../slices/authSlice";
 import { useGetProductsQuery } from "../../slices/productSlice";
+import { useGetCategoriesQuery } from "../../slices/categorySlice";
 import ProductCard from "../../components/ProductCard";
 
 const MainContainer = styled.div`
@@ -42,10 +43,23 @@ const CustomerDash = () => {
 		isSuccess: itemsSuccess,
 	} = useGetProductsQuery();
 
+	const {
+		data: categories,
+		isLoading: categoriesLoading,
+		isSuccess: categoriesSuccess,
+	} = useGetProductsQuery();
+
 	let content;
 
-	if (itemsLoading) content = <h1>Loading...</h1>;
+	if (itemsLoading || categoriesLoading) content = <h1>Loading...</h1>;
 	else {
+		const newItems = items.map((item) => ({
+			...item,
+			category: categories.find((category) => {
+				return item.category === category._id;
+			}),
+		}));
+
 		console.log(items);
 
 		content = (
@@ -63,7 +77,9 @@ const CustomerDash = () => {
 					</button>
 					CustomerDash
 				</NavContainer>
-				<StoreContainer></StoreContainer>
+				<StoreContainer>
+					<ProductCard data={newItems} />
+				</StoreContainer>
 			</MainContainer>
 		);
 	}
