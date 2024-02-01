@@ -1,7 +1,10 @@
 import styled from "styled-components";
+import images from "./images";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useGetProductsQuery } from "../slices/productSlice";
+import { useGetCategoriesQuery } from "../slices/categorySlice";
 
 const PublicContainer = styled.div`
 	min-height: 100vh;
@@ -94,11 +97,51 @@ const Highlight = styled.div`
 `;
 
 const PopularContainer = styled.div`
+	display: flex;
+	gap: 2vmin;
 	height: 400px;
 	width: 100%;
-	background: blue;
 
 	margin-bottom: 500px;
+
+	wrap-content: wrap;
+`;
+
+const ProductContent = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2vmin;
+	min-height: 400px;
+	width: 100%;
+
+	margin-bottom: 500px;
+
+	flex-wrap: wrap;
+`;
+
+const ProductCard = styled.div`
+	position: relative;
+	display: flex;
+	align-content: top;
+	width: 200px;
+	height: 300px;
+	padding: 20px;
+
+	flex-direction: column;
+
+	background 20px;
+
+
+	img {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		height: 300px;
+		width: 200px;
+		object-fit: cover;
+		object-position: top;
+	}
 `;
 
 const PublicDash = () => {
@@ -110,8 +153,29 @@ const PublicDash = () => {
 		if (userData.userInfo) navigate("/customer");
 	}, [userData, navigate]);
 
+	const { data: products, isLoading: productsLoading } = useGetProductsQuery();
+	const { data: categories, isLoading: categoriesLoading } =
+		useGetCategoriesQuery();
+
 	const login = () => {
 		navigate("/login");
+	};
+
+	const [category, setCategory] = useState(0);
+
+	var processedProducts;
+
+	if (!productsLoading && !categoriesLoading) {
+		processedProducts =
+			category == 0
+				? products
+				: products.filter((product) => product.category[0] == category);
+	}
+
+	console.log(processedProducts);
+
+	const categoryOnClick = (categoryObj) => {
+		setCategory(categoryObj._id);
 	};
 
 	return (
@@ -128,13 +192,22 @@ const PublicDash = () => {
 					<button>Cart</button>
 				</div>
 			</Navbar>
-			<CategoryBar>
-				<h2>NEW</h2>
-				<h2>APPAREL</h2>
-				<h2>FURNITURE</h2>
-				<h2>FOOD</h2>
-				<h2>SALE</h2>
-			</CategoryBar>
+			{categoriesLoading ? (
+				<CategoryBar>
+					<h2>Loading...</h2>
+				</CategoryBar>
+			) : (
+				<CategoryBar>
+					{categories.map((categoryObj) => {
+						return (
+							<h1 onClick={() => categoryOnClick(categoryObj)}>
+								{categoryObj.name}
+							</h1>
+						);
+					})}
+				</CategoryBar>
+			)}
+
 			<Highlight>
 				<img src="ad-big.png" alt="big ad" />
 				<div className="aux">
@@ -142,7 +215,29 @@ const PublicDash = () => {
 					<img src="ad-small.png" alt="" />
 				</div>
 			</Highlight>
-			<PopularContainer></PopularContainer>
+			<PopularContainer>
+				{productsLoading ? (
+					<div>Loading...</div>
+				) : (
+					<ProductContent>
+						{processedProducts.map((product) => {
+							return (
+								<ProductCard>
+									<h1>{product.name}</h1>
+									<h3>{product.price}$</h3>
+									<h3>Rating: {product.rating}</h3>
+									<h3>Sales: {product.sales}</h3>
+									<div>
+										<button>Buy Now</button>
+										<button>Add to Cart</button>
+									</div>
+									<img src={images[Math.floor(Math.random() * 22)]} alt="" />
+								</ProductCard>
+							);
+						})}
+					</ProductContent>
+				)}
+			</PopularContainer>
 		</PublicContainer>
 	);
 };
